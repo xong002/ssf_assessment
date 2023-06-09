@@ -1,5 +1,8 @@
 package vttp2023.batch3.ssf.frontcontroller.services;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatusCode;
@@ -8,12 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import vttp2023.batch3.ssf.frontcontroller.model.Credentials;
+import vttp2023.batch3.ssf.frontcontroller.respositories.AuthenticationRepository;
 
 @Service
 public class AuthenticationService {
 
 	@Value("${authentication.url}")
 	String authUrl;
+
+	@Autowired
+	AuthenticationRepository repo;
 
 	// TODO: Task 2
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
@@ -36,6 +43,16 @@ public class AuthenticationService {
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write an implementation to disable a user account for 30 mins
 	public void disableUser(String username) {
+		repo.disableLogin(username);
+	}
+
+	public boolean incrLoginAttemptCheckDisabled(String username) {
+		repo.disableLogin(username);
+		return repo.checkDisabled(username);
+	}
+
+	public boolean checkDisabled(String username){
+		return repo.checkDisabled(username);
 	}
 
 	// TODO: Task 5

@@ -28,7 +28,7 @@ public class FrontController {
 
 	@GetMapping
 	public String landingPage(HttpSession session, Model model) {
-		session.invalidate();
+		// session.invalidate();
 		model.addAttribute("credentials", new Credentials());
 		return "view0";
 	}
@@ -36,6 +36,7 @@ public class FrontController {
 	@PostMapping(path = "/login", consumes = "application/x-www-form-urlencoded", produces = "text/html")
 	public String login(HttpSession session, @ModelAttribute Captcha captcha, @Valid Credentials cred, BindingResult br, Model model) {
 		
+		//field errors
 		if (br.hasErrors()) {
 			model.addAttribute("captcha", session.getAttribute("captcha"));
 			if(session.getAttribute("fieldError") != null){
@@ -43,8 +44,16 @@ public class FrontController {
 			}
 			return "view0";
 		}
+
+		//check user disabled
+		if(svc.checkDisabled(cred.getUsername())){
+			model.addAttribute("disableUsername", cred.getUsername());
+			return "view2";
+		};
+
 		// svc to authenticate
 		try {
+			
 			if(session.getAttribute("captcha") != null){
 				System.out.println(captcha.getCaptchaInput());
 				Integer captchaInputInt = Integer.parseInt(captcha.getCaptchaInput());
@@ -56,6 +65,8 @@ public class FrontController {
 			svc.authenticate(cred.getUsername(), cred.getPassword());
 		} catch (NumberFormatException | CaptchaFailException cfe){
 			//handle login attempts failed
+			svc.incrLoginAttemptCheckDisabled(cred.getUsername());
+
 			FieldError fieldError = new FieldError("credentials", "response", "Captcha failed.");
 			br.addError(fieldError);
 			Captcha newCaptcha = new Captcha();
@@ -67,11 +78,16 @@ public class FrontController {
 		catch (HttpClientErrorException.BadRequest bre) {
 			System.out.println("Bad Request");
 			// handle login attempts failed
+			svc.incrLoginAttemptCheckDisabled(cred.getUsername());
+			//add all the fielderrors (todo)
+
 			br.addError(new FieldError("credentials", "response", "Bad Request"));
 			return "view0";
 		} catch (HttpClientErrorException.Unauthorized uae) {
 			System.out.println("Unauthorised");
 			// handle login attempts failed
+			svc.incrLoginAttemptCheckDisabled(cred.getUsername());
+
 			FieldError fieldError = new FieldError("credentials", "response", "Unauthorised");
 			br.addError(fieldError);
 			Captcha newCaptcha = new Captcha();
