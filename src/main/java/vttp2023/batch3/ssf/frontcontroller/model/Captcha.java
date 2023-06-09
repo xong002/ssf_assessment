@@ -9,7 +9,7 @@ public class Captcha {
     private String operator;
     private Integer answer;
     private String question;
-    private Integer captchaInput; //to validate
+    private String captchaInput; //to validate
 
     private String[] operatorArr = {"+", "-", "*", "/"};
 
@@ -68,17 +68,17 @@ public class Captcha {
             calcAnswer = num1 * num2;
             break;
             case "/":
-            calcAnswer =  Math.round(num1 + num2);
+            calcAnswer =  Math.round(num1 / num2);
             break;
         }
         this.answer = calcAnswer;
     }
 
-    public Integer getCaptchaInput() {
+    public String getCaptchaInput() {
         return captchaInput;
     }
 
-    public void setCaptchaInput(Integer captchaInput) {
+    public void setCaptchaInput(String captchaInput) {
         this.captchaInput = captchaInput;
     }
 
