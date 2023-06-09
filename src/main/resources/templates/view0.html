@@ -3,61 +3,100 @@
 	TODO: Task 1, Task 2, Task 3
 -->
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Login</title>
-		<style>
-			.error{
-				color:red;
-			}
-		</style>
-	</head>
-	<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      .error {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Please Login</h2>
+    <form
+      action="#"
+      data-th-action="@{/login}"
+      method="post"
+      data-th-object="${credentials}"
+    >
+      <table>
+        <tr>
+          <td>
+            <label for="username">Username:</label>
+          </td>
+          <td>
+            <input
+              type="text"
+              id="username"
+              size="30"
+              name="username"
+              placeholder="Please type in your username"
+              data-th-field="*{username}"
+            />
+          </td>
+          <td>
+            <span
+              class="error"
+              data-th-if="${#fields.hasErrors('username')}"
+              data-th-errors="*{username}"
+            ></span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="password">Password:</label>
+          </td>
+          <td>
+            <input
+              type="password"
+              id="password"
+              size="30"
+              name="password"
+              placeholder="Please type in your password"
+              data-th-field="*{password}"
+            />
+          </td>
+          <td>
+            <span
+              class="error"
+              data-th-if="${#fields.hasErrors('password')}"
+              data-th-errors="*{password}"
+            ></span>
+          </td>
+        </tr>
 
-		<h2>Please Login</h2>
-<form action="#" data-th-action="@{/login}" method="post" data-th-object="${credentials}">
-		<table>
-			<tr>
-				<td> 
-					<label for="username">Username:</label> 
-				</td>
-				<td>
-					<input type="text" id="username" size="30" name="username"
-							placeholder="Please type in your username" data-th-field="*{username}">
-				</td>
-				<td>
-					<span class="error" data-th-if="${#fields.hasErrors('username')}" data-th-errors="*{username}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<label for="password">Password:</label>
-				</td>
-				<td>
-					<input type="password" id="password" size="30" name="password"
-							placeholder="Please type in your password" data-th-field="*{password}">
-				</td>
-				<td>
-					<span class="error" data-th-if="${#fields.hasErrors('password')}" data-th-errors="*{password}"></span>
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>
-					<button type="submit">Login</button>
-				</td>
-			</tr>
-			
-			<!-- <tr>
-				<td></td>
-				<td>
-					<input type="hidden" data-th-field="*{global}">
-					<span class="error" data-th-if="${#fields.hasErrors('global')}" data-th-errors="*{global}"></span>
-				</td>
-			</tr> -->
-		</table>
-	</form>
+	<div data-th-if="${#fields.hasErrors('response')}" data-th-object="${captcha}">
 		
-	</body>
+        <tr>
+          <td></td>
+          <td>
+            <span
+              class="error"
+              data-th-errors="${credentials.response}"
+            ></span>
+          </td>
+        </tr>
+		<tr>
+          <td data-th-text="*{question}"></td>
+		  <tr>
+			<td>Answer (rounded to nearest integer): </td>
+		  <td>
+			<input type="text" data-th-field="*{captchaInput}">
+		  </td>
+		</tr>
+        </tr>
+	</div>
+
+        <tr>
+          <td></td>
+          <td>
+            <button type="submit">Login</button>
+          </td>
+        </tr>
+
+      </table>
+    </form>
+  </body>
 </html>

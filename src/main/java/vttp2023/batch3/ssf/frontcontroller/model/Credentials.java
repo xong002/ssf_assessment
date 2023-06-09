@@ -13,7 +13,9 @@ public class Credentials {
     @Size(min = 2, message = "Please enter at least 2 characters.")
     private String password;
 
-    boolean authenticated;
+    private boolean authenticated;
+    private String response;
+    private Integer loginAttempts;
 
     public Credentials() {
         this.authenticated = false;
@@ -23,6 +25,12 @@ public class Credentials {
         this.username = username;
         this.password = password;
         this.authenticated = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Credentials [username=" + username + ", password=" + password + ", authenticated=" + authenticated
+                + "]";
     }
 
     public String getUsername() {
@@ -49,9 +57,19 @@ public class Credentials {
         this.authenticated = authenticated;
     }
 
-    @Override
-    public String toString() {
-        return "Credentials [username=" + username + ", password=" + password + ", authenticated=" + authenticated
-                + "]";
+    public Integer getLoginAttempts() {
+        return loginAttempts;
+    }
+
+    public void setLoginAttempts(Integer loginAttempts) {
+        this.loginAttempts = loginAttempts;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 }
