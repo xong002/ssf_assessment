@@ -21,8 +21,7 @@ public class ProtectedController {
 	// Write a controller to protect resources rooted under /protected
 	@GetMapping("/{resource}")
 	public String getProtectedResource(HttpSession session, @PathVariable String resource){
-		svc.accessResource((Credentials) session.getAttribute("credentials"), resource);		
-		return resource;
+		return svc.accessResource((Credentials) session.getAttribute("credentials"), resource);		
 	}
 
 

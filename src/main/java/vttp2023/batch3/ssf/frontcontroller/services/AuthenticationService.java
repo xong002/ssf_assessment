@@ -56,7 +56,7 @@ public class AuthenticationService {
 
 	public String accessResource(Credentials credentials, String resource){
 		if(credentials.isAuthenticated()){
-			return repo.getResource(resource);
+			return resource;
 		} 
 		return "view0";
 	}

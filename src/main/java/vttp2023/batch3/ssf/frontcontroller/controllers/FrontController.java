@@ -28,7 +28,6 @@ public class FrontController {
 
 	@GetMapping
 	public String landingPage(HttpSession session, Model model) {
-		// session.invalidate();
 		model.addAttribute("credentials", new Credentials());
 		return "view0";
 	}
@@ -105,6 +104,16 @@ public class FrontController {
 		}
 
 		return "protected/view1";
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession session, Model model){
+		Credentials currentCred = (Credentials) session.getAttribute("credentials");
+		System.out.println(currentCred.isAuthenticated());
+		currentCred.setAuthenticated(false);
+		session.invalidate();
+		model.addAttribute("credentials", new Credentials());
+		return "view0";
 	}
 
 	// TODO: Task 2, Task 3, Task 4, Task 6
