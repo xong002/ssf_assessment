@@ -2,7 +2,7 @@
 # First stage
 #
 
-FROM maven:19-alpine-jdk AS build
+FROM maven:3.9.2-amazoncorretto-20 AS build
 
 COPY src /home/app/src
 COPY pom.xml /home/app
@@ -18,7 +18,7 @@ RUN mvn -f /home/app/pom.xml clean package
 # second stage
 #
 
-FROM openjdk:19-alpine
+FROM openjdk:20-alpine
 
 ARG REDISHOST
 ARG REDISPORT
