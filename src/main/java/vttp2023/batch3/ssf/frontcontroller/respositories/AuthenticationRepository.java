@@ -13,11 +13,13 @@ public class AuthenticationRepository {
 	RedisTemplate<String, String> template;
 
 	public void disableLogin(String username) {
+		
 		if (template.hasKey(username)) {
 			Integer loginAttempts = Integer.parseInt(template.opsForValue().get(username)) + 1;
-			if (loginAttempts >= 3) {
-				// template.opsForValue().set(username, String.valueOf(3), Duration.ofSeconds(10));
-				template.expire(username,Duration.ofSeconds(10));
+			template.opsForValue().set(username, loginAttempts.toString());
+			System.out.println(Integer.parseInt(template.opsForValue().get(username)));
+			if (Integer.parseInt(template.opsForValue().get(username)) >= 3) {
+				template.opsForValue().set(username, String.valueOf(3), Duration.ofSeconds(1800));
 			}
 			template.opsForValue().set(username, loginAttempts.toString());
 		} else
