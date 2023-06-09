@@ -56,7 +56,7 @@ public class AuthenticationService {
 
 	public String accessResource(Credentials credentials, String resource){
 		if(credentials.isAuthenticated()){
-			return resource;
+			return "/protected/" + resource;
 		} 
 		return "view0";
 	}
