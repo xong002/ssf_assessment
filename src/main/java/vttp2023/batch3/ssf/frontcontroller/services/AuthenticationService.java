@@ -42,11 +42,7 @@ public class AuthenticationService {
 	// TODO: Task 3
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write an implementation to disable a user account for 30 mins
-	public void disableUser(String username) {
-		repo.disableLogin(username);
-	}
-
-	public boolean incrLoginAttemptCheckDisabled(String username) {
+	public boolean disableUser(String username) {
 		repo.disableLogin(username);
 		return repo.checkDisabled(username);
 	}

@@ -53,7 +53,6 @@ public class FrontController {
 
 		// svc to authenticate
 		try {
-			
 			if(session.getAttribute("captcha") != null){
 				System.out.println(captcha.getCaptchaInput());
 				Integer captchaInputInt = Integer.parseInt(captcha.getCaptchaInput());
@@ -65,7 +64,7 @@ public class FrontController {
 			svc.authenticate(cred.getUsername(), cred.getPassword());
 		} catch (NumberFormatException | CaptchaFailException cfe){
 			//handle login attempts failed
-			svc.incrLoginAttemptCheckDisabled(cred.getUsername());
+			svc.disableUser(cred.getUsername());
 
 			FieldError fieldError = new FieldError("credentials", "response", "Captcha failed.");
 			br.addError(fieldError);
@@ -78,7 +77,7 @@ public class FrontController {
 		catch (HttpClientErrorException.BadRequest bre) {
 			System.out.println("Bad Request");
 			// handle login attempts failed
-			svc.incrLoginAttemptCheckDisabled(cred.getUsername());
+			svc.disableUser(cred.getUsername());
 			//add all the fielderrors (todo)
 
 			br.addError(new FieldError("credentials", "response", "Bad Request"));
@@ -86,7 +85,7 @@ public class FrontController {
 		} catch (HttpClientErrorException.Unauthorized uae) {
 			System.out.println("Unauthorised");
 			// handle login attempts failed
-			svc.incrLoginAttemptCheckDisabled(cred.getUsername());
+			svc.disableUser(cred.getUsername());
 
 			FieldError fieldError = new FieldError("credentials", "response", "Unauthorised");
 			br.addError(fieldError);
