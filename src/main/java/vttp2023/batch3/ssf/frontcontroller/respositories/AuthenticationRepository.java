@@ -34,5 +34,8 @@ public class AuthenticationRepository {
 
 	// TODO Task 5
 	// Use this class to implement CRUD operations on Redis
-
+	public String getResource(String resource){
+		//get protected resource from Redis
+		return resource;
+	}
 }

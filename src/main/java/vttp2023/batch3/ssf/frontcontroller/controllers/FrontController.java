@@ -46,9 +46,9 @@ public class FrontController {
 		}
 
 		//check user disabled
-		if(svc.checkDisabled(cred.getUsername())){
+		if(svc.isLocked(cred.getUsername())){
 			model.addAttribute("disableUsername", cred.getUsername());
-			return "view2";
+			return "protected/view2";
 		};
 
 		// svc to authenticate
@@ -62,6 +62,8 @@ public class FrontController {
 				}
 			}
 			svc.authenticate(cred.getUsername(), cred.getPassword());
+			session.setAttribute("credentials", cred);
+			System.out.println(((Credentials) session.getAttribute("credentials")).isAuthenticated());
 		} catch (NumberFormatException | CaptchaFailException cfe){
 			//handle login attempts failed
 			svc.disableUser(cred.getUsername());
@@ -97,11 +99,12 @@ public class FrontController {
 		} catch (Exception e) {
 			// add internal server error to model
 			System.out.println("Internal server error");
+			e.printStackTrace();
 			br.addError(new FieldError("credentials", "response", "Internal Server Error"));
 			return "view0";
 		}
 
-		return "view1";
+		return "protected/view1";
 	}
 
 	// TODO: Task 2, Task 3, Task 4, Task 6

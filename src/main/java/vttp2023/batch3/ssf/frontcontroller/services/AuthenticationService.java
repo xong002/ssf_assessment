@@ -47,14 +47,17 @@ public class AuthenticationService {
 		return repo.checkDisabled(username);
 	}
 
-	public boolean checkDisabled(String username){
-		return repo.checkDisabled(username);
-	}
-
 	// TODO: Task 5
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write an implementation to check if a given user's login has been disabled
 	public boolean isLocked(String username) {
-		return false;
+		return repo.checkDisabled(username);
+	}
+
+	public String accessResource(Credentials credentials, String resource){
+		if(credentials.isAuthenticated()){
+			return repo.getResource(resource);
+		} 
+		return "view0";
 	}
 }
