@@ -18,7 +18,7 @@ RUN mvn -f /home/app/pom.xml clean package
 # second stage
 #
 
-FROM openjdk:20-alpine
+FROM maven:3.9.2-amazoncorretto-20
 
 ARG REDISHOST
 ARG REDISPORT
