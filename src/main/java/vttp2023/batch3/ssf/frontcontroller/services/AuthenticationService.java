@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 
 import vttp2023.batch3.ssf.frontcontroller.model.Credentials;
@@ -54,10 +55,11 @@ public class AuthenticationService {
 		return repo.checkDisabled(username);
 	}
 
-	public String accessResource(Credentials credentials, String resource){
+	public String accessResource(Credentials credentials, String resource, Model model){
 		if(credentials.isAuthenticated()){
 			return "/protected/" + resource;
 		} 
+		model.addAttribute("credentials", new Credentials());
 		return "view0";
 	}
 }
